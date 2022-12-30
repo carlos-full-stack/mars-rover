@@ -38,6 +38,15 @@ final class EarthTest extends TestCase
 
     }
 
+    public function testShowsErrorWhenSendsCommandsWithoutCollection(): void
+    {
+
+        $newEarth = new Earth();
+        $response = $newEarth->sendCommandRover( "" );
+        $this->assertStringStartsWith( "ERROR. Commands collection cannot be empty", $response );
+
+    }
+
 
 }
 

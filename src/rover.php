@@ -2,6 +2,8 @@
 
 namespace Rover;
 
+use Mars\Mars;
+
 require("../vendor/autoload.php");
 
     class Rover {

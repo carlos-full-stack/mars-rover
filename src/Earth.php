@@ -11,4 +11,14 @@ require("../vendor/autoload.php");
 
         private $name = "Earth";
 
+        static function sendCommandRover( $collection )
+        {
+            if ( !preg_match( '[F|L|R]', $collection )  ) return "Please introduce a valid collection";
+
+            $newRover = new Rover( "Curiosity", $location = array( 'x' => 2, 'y' => 1 ), "N" );
+            return $newRover->moveRover( $collection );
+        }
+
     }
+
+    echo Earth::sendCommandRover( "FFF" );

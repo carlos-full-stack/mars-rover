@@ -13,7 +13,9 @@ require("../vendor/autoload.php");
 
         static function sendCommandRover( $collection )
         {
-            if ( !preg_match( '[F|L|R]', $collection )  ) return "Please introduce a valid collection";
+            if ( empty( $collection )  ) return "ERROR. Commands collection cannot be empty";
+
+            elseif ( !preg_match( '[F|L|R]', $collection )  ) return "Please introduce a valid collection";
 
             $newRover = new Rover( "Curiosity", $location = array( 'x' => 2, 'y' => 1 ), "N" );
             return $newRover->moveRover( $collection );
@@ -21,4 +23,4 @@ require("../vendor/autoload.php");
 
     }
 
-    echo Earth::sendCommandRover( "FFF" );
+    echo Earth::sendCommandRover( "" );

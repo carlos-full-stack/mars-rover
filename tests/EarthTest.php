@@ -19,6 +19,18 @@ final class EarthTest extends TestCase
         $this->assertStringStartsWith(" Rover location is", $response );
 
     }
+
+    public function testNotAllowedCommandsAreNotSent(): void
+    {
+        $newEarth = new Earth();
+
+        $response = $newEarth->sendCommandRover( "FLR" );
+
+        $this->assertStringStartsWith(" Rover location is", $response );
+
+    }
+
+
 }
 
 

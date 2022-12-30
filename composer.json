@@ -9,7 +9,8 @@
             "Earth\\": "src/",
             "Mars\\": "src/",
             "Planet\\": "src/",
-            "Rover\\": "src/"
+            "Rover\\": "src/",
+            "Factory\\": "vendor/fakerphp/src/Faker/"
             
         }
     },

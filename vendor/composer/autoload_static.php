@@ -39,6 +39,7 @@ class ComposerStaticInit5054cf5c2f58e74238c8e3f6588d9dd9
         'F' => 
         array (
             'Faker\\' => 6,
+            'Factory\\' => 8,
         ),
         'E' => 
         array (
@@ -89,6 +90,10 @@ class ComposerStaticInit5054cf5c2f58e74238c8e3f6588d9dd9
         'Faker\\' => 
         array (
             0 => __DIR__ . '/..' . '/fakerphp/faker/src/Faker',
+        ),
+        'Factory\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/fakerphp/src/Faker',
         ),
         'Earth\\' => 
         array (

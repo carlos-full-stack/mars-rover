@@ -2,4 +2,14 @@
     "require-dev": {
         "phpunit/phpunit": "9"
     }
+    ,
+    "autoload": {
+        "psr-4": {
+            "Earth\\": "src/",
+            "Mars\\": "src/",
+            "Planet\\": "src/",
+            "Rover\\": "src/"
+            
+        }
+    }
 }

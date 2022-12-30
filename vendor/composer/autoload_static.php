@@ -20,9 +20,22 @@ class ComposerStaticInit5054cf5c2f58e74238c8e3f6588d9dd9
         array (
             'Webmozart\\Assert\\' => 17,
         ),
+        'R' => 
+        array (
+            'Rover\\' => 6,
+        ),
         'P' => 
         array (
             'Prophecy\\' => 9,
+            'Planet\\' => 7,
+        ),
+        'M' => 
+        array (
+            'Mars\\' => 5,
+        ),
+        'E' => 
+        array (
+            'Earth\\' => 6,
         ),
         'D' => 
         array (
@@ -35,16 +48,32 @@ class ComposerStaticInit5054cf5c2f58e74238c8e3f6588d9dd9
         'phpDocumentor\\Reflection\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
-            1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
-            2 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
         ),
         'Webmozart\\Assert\\' => 
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
         ),
+        'Rover\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
+        ),
         'Prophecy\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy',
+        ),
+        'Planet\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
+        ),
+        'Mars\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
+        ),
+        'Earth\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
         ),
         'Doctrine\\Instantiator\\' => 
         array (

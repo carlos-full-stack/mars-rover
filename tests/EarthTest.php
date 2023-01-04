@@ -4,7 +4,6 @@ use Earth\Earth;
 use PHPUnit\Framework\TestCase;
 use Faker\Factory;
 
-require("../vendor/autoload.php");
 
 final class EarthTest extends TestCase
 {

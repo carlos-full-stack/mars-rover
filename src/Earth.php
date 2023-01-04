@@ -11,7 +11,7 @@ require("../vendor/autoload.php");
 
         private $name = "Earth";
 
-        static function sendCommandRover( $collection )
+        public function sendCommandRover( $collection )
         {
             if ( empty( $collection )  ) return "ERROR. Commands collection cannot be empty";
 
@@ -22,5 +22,3 @@ require("../vendor/autoload.php");
         }
 
     }
-
-    echo Earth::sendCommandRover( "" );

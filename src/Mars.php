@@ -15,8 +15,8 @@ require("../vendor/autoload.php");
 
         public function __construct()
         {
-            $this->area = array( 'x' => 2, 'y' => 10 );
-            $this->obstacle = array( 'x' => 2, 'y' => 5 );
+            $this->area = array( 'x' => 25, 'y' => 25);
+            $this->obstacle = array( 'x' => 20, 'y' => 20 );
         }
 
         public function setArea( $x, $y )

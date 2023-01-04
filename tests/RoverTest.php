@@ -98,6 +98,44 @@ final class RoverTest extends TestCase
     }
 
 
+    public function test_F_Command_And_E_Direction_Results_In_X_Plus_One() : void
+    {
+
+        $initialLocation = $this->rover->location;
+
+        $this->rover->direction = "E";
+        $this->rover->moveRover( "F" );
+
+        $this->assertSame( $this->rover->location['x'], $initialLocation['x'] +1);
+
+    }
+
+    public function test_L_Command_And_E_Direction_Results_In_Y_Plus_One() : void
+    {
+
+        $initialLocation = $this->rover->location;
+
+        $this->rover->direction = "E";
+        $this->rover->moveRover( "L" );
+
+        $this->assertSame( $this->rover->location['y'], $initialLocation['y'] +1);
+
+    }
+
+    public function test_R_Command_And_E_Direction_Results_In_Y_Minus_One() : void
+    {
+
+        $initialLocation = $this->rover->location;
+
+        $this->rover->direction = "E";
+        $this->rover->moveRover( "R" );
+
+        $this->assertSame( $this->rover->location['y'], $initialLocation['y'] -1);
+
+
+    }
+
+
 }
 
 

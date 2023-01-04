@@ -33,6 +33,32 @@ final class RoverTest extends TestCase
 
     }
 
+    public function test_L_Command_And_N_Direction_Results_In_X_Minus_One() : void
+    {
+
+        $initialLocation = $this->rover->location;
+
+        $this->rover->direction = "N";
+        $this->rover->moveRover( "L" );
+
+        $this->assertSame( $this->rover->location['x'], $initialLocation['x'] -1);
+
+    }
+
+    public function test_L_Command_And_N_Direction_Results_In_X_Plus_One() : void
+    {
+
+        $initialLocation = $this->rover->location;
+
+        $this->rover->direction = "N";
+        $this->rover->moveRover( "R" );
+
+        $this->assertSame( $this->rover->location['x'], $initialLocation['x'] +1);
+
+
+    }
+
+
 }
 
 

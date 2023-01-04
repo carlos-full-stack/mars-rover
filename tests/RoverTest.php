@@ -45,7 +45,7 @@ final class RoverTest extends TestCase
 
     }
 
-    public function test_L_Command_And_N_Direction_Results_In_X_Plus_One() : void
+    public function test_R_Command_And_N_Direction_Results_In_X_Plus_One() : void
     {
 
         $initialLocation = $this->rover->location;
@@ -54,6 +54,45 @@ final class RoverTest extends TestCase
         $this->rover->moveRover( "R" );
 
         $this->assertSame( $this->rover->location['x'], $initialLocation['x'] +1);
+
+
+    }
+
+
+
+    public function test_F_Command_And_S_Direction_Results_In_Y_Minus_One() : void
+    {
+
+        $initialLocation = $this->rover->location;
+
+        $this->rover->direction = "S";
+        $this->rover->moveRover( "F" );
+
+        $this->assertSame( $this->rover->location['y'], $initialLocation['y'] -1);
+
+    }
+
+    public function test_L_Command_And_S_Direction_Results_In_X_Minus_One() : void
+    {
+
+        $initialLocation = $this->rover->location;
+
+        $this->rover->direction = "S";
+        $this->rover->moveRover( "L" );
+
+        $this->assertSame( $this->rover->location['x'], $initialLocation['x'] +1);
+
+    }
+
+    public function test_R_Command_And_S_Direction_Results_In_X_Plus_One() : void
+    {
+
+        $initialLocation = $this->rover->location;
+
+        $this->rover->direction = "S";
+        $this->rover->moveRover( "R" );
+
+        $this->assertSame( $this->rover->location['x'], $initialLocation['x'] -1);
 
 
     }

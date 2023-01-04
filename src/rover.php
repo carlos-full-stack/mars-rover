@@ -107,7 +107,7 @@ require("../vendor/autoload.php");
                             break;
 
 
-                            case "L" :
+                            case "R" :
                                 $newLocation = array ( 'x' => $this->location['x'] -1, 'y' => $this->location['y'] );
                                 $this->detectMarsObstacle( $newLocation );
                             break;
@@ -122,19 +122,19 @@ require("../vendor/autoload.php");
                         {
 
                             case "F" :
-                                $newLocation = array ( 'x' => $this->location['x'] -1, 'y' => $this->location['y'] );
-                                $this->detectMarsObstacle( $newLocation );
-                            break;
-
-
-                            case "L" :
-                                $newLocation = array ( 'x' => $this->location['x'], 'y' => $this->location['y'] -1 );
+                                $newLocation = array ( 'x' => $this->location['x'] + 1, 'y' => $this->location['y']);
                                 $this->detectMarsObstacle( $newLocation );
                             break;
 
 
                             case "L" :
                                 $newLocation = array ( 'x' => $this->location['x'], 'y' => $this->location['y'] +1 );
+                                $this->detectMarsObstacle( $newLocation );
+                            break;
+
+
+                            case "R" :
+                                $newLocation = array ( 'x' => $this->location['x'], 'y' => $this->location['y'] -1 );
                                 $this->detectMarsObstacle( $newLocation );
                             break;
 
@@ -148,20 +148,20 @@ require("../vendor/autoload.php");
                         {
 
                             case "F" :
-                                $newLocation = array ($this->location['x'] , $this->location['y'] +1) ;
+                                $newLocation = array ( 'x' =>  $this->location['x'] -1,  'y' =>  $this->location['y']) ;
                                 $this->detectMarsObstacle( $newLocation );
                             break;
 
 
                             case "L" :
-                                $newLocation = array ($this->location['x'] , $this->location['y'] +1) ;
+                                $newLocation = array ( 'x' => $this->location['x'] , 'y' =>  $this->location['y'] -1) ;
                                 $this->detectMarsObstacle( $newLocation );
                                 
                             break;
 
 
-                            case "L" :
-                                $newLocation = array ( 'x' => $this->location['x'], 'y' => $this->location['y'] -1 );
+                            case "R" :
+                                $newLocation = array ( 'x' => $this->location['x'], 'y' => $this->location['y'] +1 );
                                 $this->detectMarsObstacle( $newLocation );
 
                             break;

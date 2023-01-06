@@ -7,13 +7,22 @@ use Faker\Factory;
 
 final class EarthTest extends TestCase
 {
+
+    protected $faker;
+    protected $earth;
+
+    protected function setUp(): void
+    {
+        $this->faker = Factory::create();
+        $this->earth = new Earth();
+    }
+
+
     public function testOnlyAllowedCommandsAreSent(): void
     {
-        $newEarth = new Earth();
-        $this->assertInstanceOf( Earth::class, $newEarth );
+        $this->assertInstanceOf( Earth::class, $this->earth );
 
-        $faker = Factory::create();
-        $response = $newEarth->sendCommandRover( $faker->randomElement( ['F', 'L', 'R'] ) );
+        $response = $this->earth->sendCommandRover( $this->faker->randomElement( ['F', 'L', 'R'] ) );
         $this->assertStringStartsWith(" Rover location is", $response );
 
     }
@@ -21,18 +30,15 @@ final class EarthTest extends TestCase
     public function testNotAllowedCommandsAreNotSent(): void
     {
 
-        $faker = Factory::create();
-
         for ($i = 0; $i < 6; $i++) 
         {
-            $wrongCommand = $faker->bothify("#");
+            $wrongCommand = $this->faker->bothify("#");
             if ( $wrongCommand != "F" || "L" || "R" );
             $collection =+ $wrongCommand;
      
         }
 
-        $newEarth = new Earth();
-        $response = $newEarth->sendCommandRover( $collection );
+        $response = $this->earth->sendCommandRover( $collection );
         $this->assertStringStartsWith( "Please introduce a valid collection", $response );
 
     }
@@ -40,15 +46,10 @@ final class EarthTest extends TestCase
     public function testShowsErrorWhenSendsCommandsWithoutCollection(): void
     {
 
-        $newEarth = new Earth();
-        $response = $newEarth->sendCommandRover( "" );
+        $response = $this->earth->sendCommandRover( null );
         $this->assertStringStartsWith( "ERROR. Commands collection cannot be empty", $response );
 
     }
 
 
 }
-
-
-
-

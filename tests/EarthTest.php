@@ -7,48 +7,49 @@ use Faker\Factory;
 
 final class EarthTest extends TestCase
 {
-    public function testOnlyAllowedCommandsAreSent(): void
-    {
-        $newEarth = new Earth();
-        $this->assertInstanceOf( Earth::class, $newEarth );
 
-        $faker = Factory::create();
-        $response = $newEarth->sendCommandRover( $faker->randomElement( ['F', 'L', 'R'] ) );
+    protected $faker;
+    protected $earth;
+
+    protected function setUp(): void
+    {
+        $this->faker = Factory::create();
+        $this->earth = new Earth();
+    }
+
+
+    public function test_Only_Allowed_Commands_Are_Sent(): void
+    {
+        $this->assertInstanceOf( Earth::class, $this->earth );
+
+        $response = $this->earth->sendCommandRover( $this->faker->randomElement( ['F', 'L', 'R'] ) );
         $this->assertStringStartsWith(" Rover location is", $response );
 
     }
 
-    public function testNotAllowedCommandsAreNotSent(): void
+    public function test_Not_Allowed_Commands_Are_Not_Sent(): void
     {
-
-        $faker = Factory::create();
 
         for ($i = 0; $i < 6; $i++) 
         {
-            $wrongCommand = $faker->bothify("#");
+            $wrongCommand = $this->faker->bothify("#");
             if ( $wrongCommand != "F" || "L" || "R" );
             $collection =+ $wrongCommand;
      
         }
 
-        $newEarth = new Earth();
-        $response = $newEarth->sendCommandRover( $collection );
+        $response = $this->earth->sendCommandRover( $collection );
         $this->assertStringStartsWith( "Please introduce a valid collection", $response );
 
     }
 
-    public function testShowsErrorWhenSendsCommandsWithoutCollection(): void
+    public function test_Error_Message_Is_Shown_When_Command_Is_Sent_Witout_Collection(): void
     {
 
-        $newEarth = new Earth();
-        $response = $newEarth->sendCommandRover( "" );
+        $response = $this->earth->sendCommandRover( null );
         $this->assertStringStartsWith( "ERROR. Commands collection cannot be empty", $response );
 
     }
 
 
 }
-
-
-
-

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use Faker\Factory;
+use Mars\Mars;
 use Rover\Rover;
 
 final class RoverTest extends TestCase
@@ -10,173 +10,116 @@ final class RoverTest extends TestCase
     protected $rover;
     protected $location;
     protected $direction;
+    protected $mars;
+    protected $faker;
 
     protected function setUp(): void
     {
-        $faker = Factory::create();
-        $this->rover = new Rover( $faker->text(5), $location = array( 
-            'x' => $faker->numberBetween(5, 10), 
-            'y' => $faker->numberBetween(5, 10) ),
+        $this->rover = new Rover( "Curiosity", $location = array( 
+            'x' => 5, 
+            'y' => 5 ),
             null );
     }
 
 
-    public function test_F_Command_And_N_Direction_Results_In_Y_Plus_One() : void
+    public function directionsProvider() :array
     {
 
-        $initialLocation = $this->rover->location;
+        return [
+            [ "F", "N", 5, 6],
+            [ "L", "N", 4, 5],
+            [ "R", "N", 6, 5],
 
-        $this->rover->direction = "N";
-        $this->rover->moveRover( "F" );
+            [ "F", "S", 5, 4],
+            [ "L", "S", 6, 5],
+            [ "R", "S", 4, 5],
 
-        $this->assertSame( $this->rover->location['y'], $initialLocation['y'] +1);
+            [ "F", "E", 6, 5],
+            [ "L", "E", 5, 6],
+            [ "R", "E", 5, 4],
 
-    }
+            [ "F", "W", 4, 5],
+            [ "L", "W", 5, 4],
+            [ "R", "W", 5, 6],
 
-    public function test_L_Command_And_N_Direction_Results_In_X_Minus_One() : void
-    {
-
-        $initialLocation = $this->rover->location;
-
-        $this->rover->direction = "N";
-        $this->rover->moveRover( "L" );
-
-        $this->assertSame( $this->rover->location['x'], $initialLocation['x'] -1);
-
-    }
-
-    public function test_R_Command_And_N_Direction_Results_In_X_Plus_One() : void
-    {
-
-        $initialLocation = $this->rover->location;
-
-        $this->rover->direction = "N";
-        $this->rover->moveRover( "R" );
-
-        $this->assertSame( $this->rover->location['x'], $initialLocation['x'] +1);
-
-
+            ];
     }
 
 
-
-    public function test_F_Command_And_S_Direction_Results_In_Y_Minus_One() : void
+    public function obstaclePreLocationsProvider() :array
     {
 
-        $initialLocation = $this->rover->location;
+        return [
+            [ 6, 5, "F", "N"],
+            [ 5, 6, "L", "N"],
 
-        $this->rover->direction = "S";
-        $this->rover->moveRover( "F" );
-
-        $this->assertSame( $this->rover->location['y'], $initialLocation['y'] -1);
-
-    }
-
-    public function test_L_Command_And_S_Direction_Results_In_X_Minus_One() : void
-    {
-
-        $initialLocation = $this->rover->location;
-
-        $this->rover->direction = "S";
-        $this->rover->moveRover( "L" );
-
-        $this->assertSame( $this->rover->location['x'], $initialLocation['x'] +1);
-
-    }
-
-    public function test_R_Command_And_S_Direction_Results_In_X_Plus_One() : void
-    {
-
-        $initialLocation = $this->rover->location;
-
-        $this->rover->direction = "S";
-        $this->rover->moveRover( "R" );
-
-        $this->assertSame( $this->rover->location['x'], $initialLocation['x'] -1);
+            [ 6, 7, "F", "S"],
+            [ 7, 6, "L", "S"],
 
 
+            ];
     }
 
 
-    public function test_F_Command_And_E_Direction_Results_In_X_Plus_One() : void
+
+    public function areaPreLimitsProvider() :array
     {
 
-        $initialLocation = $this->rover->location;
+        return [
+            [ 24, 24, "F", "N"],
+            [ 24, 24, "R", "N"],
 
-        $this->rover->direction = "E";
-        $this->rover->moveRover( "F" );
-
-        $this->assertSame( $this->rover->location['x'], $initialLocation['x'] +1);
-
-    }
-
-    public function test_L_Command_And_E_Direction_Results_In_Y_Plus_One() : void
-    {
-
-        $initialLocation = $this->rover->location;
-
-        $this->rover->direction = "E";
-        $this->rover->moveRover( "L" );
-
-        $this->assertSame( $this->rover->location['y'], $initialLocation['y'] +1);
-
-    }
-
-    public function test_R_Command_And_E_Direction_Results_In_Y_Minus_One() : void
-    {
-
-        $initialLocation = $this->rover->location;
-
-        $this->rover->direction = "E";
-        $this->rover->moveRover( "R" );
-
-        $this->assertSame( $this->rover->location['y'], $initialLocation['y'] -1);
-
-
+            ];
     }
 
 
-    
-    public function test_F_Command_And_W_Direction_Results_In_X_Minus_One() : void
+      /**
+     * @dataProvider directionsProvider
+     */
+
+    public function test_Commands_Move_Rover_As_Expected( $command, $direction, $expectedX, $expectedY ) : void
     {
+        $this->rover->direction = $direction;
+        $expectedLocation = array( 'x' => ( $expectedX ), 'y' => ( $expectedY ));
+        $this->rover->moveRover( $command );
 
-        $initialLocation = $this->rover->location;
-
-        $this->rover->direction = "W";
-        $this->rover->moveRover( "F" );
-
-        $this->assertSame( $this->rover->location['x'], $initialLocation['x'] -1);
+        $this->assertSame( $expectedLocation, $this->rover->location );
 
     }
 
-    public function test_L_Command_And_W_Direction_Results_In_Y_Minus_One() : void
+    /**
+     * @dataProvider obstaclePreLocationsProvider
+     */
+
+
+
+    public function test_Rover_Can_Not_Move_To_Obstacle_Location ( $locationX, $locationY, $command, $direction ) : void
     {
+        $marsVars = get_class_vars(Mars::class);
+        $this->rover->location = array( 'x' => ( $locationX ), 'y' => ( $locationY ));
+        $this->rover->direction = $direction;
+        $this->rover->moveRover( $command );
 
-        $initialLocation = $this->rover->location;
+        $this->assertNotSame( $this->rover->location, $marsVars['obstacle'] );
 
-        $this->rover->direction = "W";
-        $this->rover->moveRover( "L" );
+}
 
-        $this->assertSame( $this->rover->location['y'], $initialLocation['y'] -1);
-
-    }
-
-    public function test_R_Command_And_W_Direction_Results_In_Y_Plus_One() : void
-    {
-
-        $initialLocation = $this->rover->location;
-
-        $this->rover->direction = "W";
-        $this->rover->moveRover( "R" );
-
-        $this->assertSame( $this->rover->location['y'], $initialLocation['y'] +1);
+    /**
+     * @dataProvider areaPreLimitsProvider
+     */
 
 
-    }
+public function test_Rover_Can_Not_Move_Outside_Mars_Area ( $locationX, $locationY, $command, $direction ) : void
+{
+    $marsVars = get_class_vars( Mars::class );
+    $this->rover->location = array( 'x' => ( $locationX ), 'y' => ( $locationY ));
+    $this->rover->direction = $direction;
+    $this->rover->moveRover( $command );
 
+    $this->assertTrue( ( $this->rover->location['x'] < 25 ) && ( $this->rover->location['y'] < 25 ) );
 
 }
 
 
 
-
+}

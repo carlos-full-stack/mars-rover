@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use Faker\Factory;
 use Mars\Mars;
 use Rover\Rover;
 
@@ -16,13 +15,10 @@ final class RoverTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->faker = Factory::create();
-        $this->rover = new Rover( $this->faker->text(5), $location = array( 
+        $this->rover = new Rover( "Curiosity", $location = array( 
             'x' => 5, 
             'y' => 5 ),
             null );
-
-        $this->mars = new Mars();
     }
 
 
@@ -50,11 +46,38 @@ final class RoverTest extends TestCase
     }
 
 
+    public function obstaclePreLocationsProvider() :array
+    {
+
+        return [
+            [ 6, 5, "F", "N"],
+            [ 5, 6, "L", "N"],
+
+            [ 6, 7, "F", "S"],
+            [ 7, 6, "L", "S"],
+
+
+            ];
+    }
+
+
+
+    public function areaPreLimitsProvider() :array
+    {
+
+        return [
+            [ 24, 24, "F", "N"],
+            [ 24, 24, "R", "N"],
+
+            ];
+    }
+
+
       /**
      * @dataProvider directionsProvider
      */
 
-    public function test_Commands_Move_Rover_As_Expected( $command, $direction,  $expectedX, $expectedY ) : void
+    public function test_Commands_Move_Rover_As_Expected( $command, $direction, $expectedX, $expectedY ) : void
     {
         $this->rover->direction = $direction;
         $expectedLocation = array( 'x' => ( $expectedX ), 'y' => ( $expectedY ));
@@ -64,145 +87,39 @@ final class RoverTest extends TestCase
 
     }
 
+    /**
+     * @dataProvider obstaclePreLocationsProvider
+     */
 
 
-    public function test_Rover_Do_Not_Moves_To_Location_When_Finds_Obstacle_At_X_Plus_One() : void
+
+    public function test_Rover_Can_Not_Move_To_Obstacle_Location ( $locationX, $locationY, $command, $direction ) : void
     {
-        $this->rover->location = array( 
-            'y' => $this->mars->obstacle['y'] , 
-            'x' => $this->mars->obstacle['x'] -1);
+        $marsVars = get_class_vars(Mars::class);
+        $this->rover->location = array( 'x' => ( $locationX ), 'y' => ( $locationY ));
+        $this->rover->direction = $direction;
+        $this->rover->moveRover( $command );
 
-        $this->rover->detectMarsObstacle( array(
-            'y' => $this->mars->obstacle['y'] , 
-            'x' => $this->mars->obstacle['x'] ));
+        $this->assertNotSame( $this->rover->location, $marsVars['obstacle'] );
 
-        $this->assertNotSame( $this->rover->location['x'], $this->mars->obstacle['x'] );
+}
 
-
-    }
-
-
-    public function test_Rover_Do_Not_Moves_To_Location_When_Finds_Obstacle_At_X_Minus_One() : void
-    {
-        $this->rover->location = array( 
-            'y' => $this->mars->obstacle['y'] , 
-            'x' => $this->mars->obstacle['x'] +1);
-
-        $this->rover->detectMarsObstacle( array(
-            'y' => $this->mars->obstacle['y'] , 
-            'x' => $this->mars->obstacle['x'] ));
-
-        $this->assertNotSame( $this->rover->location['x'], $this->mars->obstacle['x'] );
+    /**
+     * @dataProvider areaPreLimitsProvider
+     */
 
 
-    }
+public function test_Rover_Can_Not_Move_Outside_Mars_Area ( $locationX, $locationY, $command, $direction ) : void
+{
+    $marsVars = get_class_vars( Mars::class );
+    $this->rover->location = array( 'x' => ( $locationX ), 'y' => ( $locationY ));
+    $this->rover->direction = $direction;
+    $this->rover->moveRover( $command );
+
+    $this->assertTrue( ( $this->rover->location['x'] < 25 ) && ( $this->rover->location['y'] < 25 ) );
+
+}
 
 
-    public function test_Rover_Confirm_Location_When_Does_Not_Find_Obstacles_At_X_Plus_One() : void
-    {
-
-         $initialLocation = $this->rover->location;
-
-         $newLocation = array( 
-            'y' => $this->rover->location['y'], 
-            'x' => $this->rover->location['x'] + 1 );
-
-        $this->rover->detectMarsObstacle( array(
-            'y' => $this->mars->obstacle['y'] , 
-            'x' => $this->mars->obstacle['x'] ));
-
-        $this->assertSame( $newLocation['x'], $initialLocation['x'] + 1 );
-
-
-    }
-
-
-    public function test_Rover_Confirm_Location_When_Does_Not_Find_Obstacles_At_X_Minus_One() : void
-    {
-
-         $initialLocation = $this->rover->location;
-
-         $newLocation = array( 
-            'y' => $this->rover->location['y'], 
-            'x' => $this->rover->location['x'] -1 );
-
-        $this->rover->detectMarsObstacle( array(
-            'y' => $this->mars->obstacle['y'] , 
-            'x' => $this->mars->obstacle['x'] ));
-
-        $this->assertSame( $newLocation['x'], $initialLocation['x'] - 1 );
-
-
-    }
-
-
-    public function test_Rover_Do_Not_Moves_To_Location_When_Finds_Obstacle_At_Y_Plus_One() : void
-    {
-        $this->rover->location = array( 
-            'y' => $this->mars->obstacle['y'] -1 , 
-            'x' => $this->mars->obstacle['x']);
-
-        $this->rover->detectMarsObstacle( array(
-            'y' => $this->mars->obstacle['y'] , 
-            'x' => $this->mars->obstacle['x'] ));
-
-        $this->assertNotSame( $this->rover->location['y'], $this->mars->obstacle['y'] );
-
-
-    }
-
-
-    public function test_Rover_Do_Not_Moves_To_Location_When_Finds_Obstacle_At_Y_Minus_One() : void
-    {
-        $this->rover->location = array( 
-            'y' => $this->mars->obstacle['y'] +1 , 
-            'x' => $this->mars->obstacle['x']);
-
-        $this->rover->detectMarsObstacle( array(
-            'y' => $this->mars->obstacle['y'] , 
-            'x' => $this->mars->obstacle['x'] ));
-
-        $this->assertNotSame( $this->rover->location['y'], $this->mars->obstacle['y'] );
-
-
-    }
-
-
-    public function test_Rover_Confirm_Location_When_Does_Not_Find_Obstacles_At_Y_Plus_One() : void
-    {
-
-         $initialLocation = $this->rover->location;
-
-         $newLocation = array( 
-            'y' => $this->rover->location['y'] +1, 
-            'x' => $this->rover->location['x'] );
-
-        $this->rover->detectMarsObstacle( array(
-            'y' => $this->mars->obstacle['y'] , 
-            'x' => $this->mars->obstacle['x'] ));
-
-        $this->assertSame( $newLocation['y'], $initialLocation['y'] +1 );
-
-
-    }
-
-
-    public function test_Rover_Confirm_Location_When_Does_Not_Find_Obstacles_At_Y_Minus_One() : void
-    {
-
-         $initialLocation = $this->rover->location;
-
-         $newLocation = array( 
-            'y' => $this->rover->location['y'] -1, 
-            'x' => $this->rover->location['x']);
-
-        $this->rover->detectMarsObstacle( array(
-            'y' => $this->mars->obstacle['y'] , 
-            'x' => $this->mars->obstacle['x'] ));
-
-        $this->assertSame( $newLocation['y'], $initialLocation['y'] -1 );
-
-
-    }
 
 }

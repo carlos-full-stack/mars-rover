@@ -30,16 +30,21 @@ require("../vendor/autoload.php");
             //  If obstacle is detected, message response will be reported to Earh
             //  and collection secuence will be interrupted using the attribute $isStopped;
 
-            $mars1 = new Mars();
-            $mars1->obstacle;
+            //$mars1 = new Mars();
+            //$mars1->obstacle;
 
-            if ( $newLocation == $mars1->obstacle )
+            $marsVars = get_class_vars(Mars::class);
+
+            // print_r( $marsVars['obstacle'] );
+            $obstacle = $marsVars['obstacle'];
+
+            if ( $newLocation == $marsVars['obstacle'] )
             {
                 $this->response = ( "Obstacle detected at " . implode( "-", $newLocation ) . "</br>" );
                 return $this->isStopped++;
-            }
+            }  // $marsVars['obstacle']
 
-            elseif ( $newLocation['y'] >= $mars1->area['y'] || $newLocation['y'] < 0 )
+            elseif ( ( $marsVars['area']['x'] - $newLocation['x'] ) == 0 || ( $marsVars['area']['y'] - $newLocation['y'] ) == 0 )
             {
                 $this->response = ( "Limit reached at " . implode( "-", $newLocation ) . "<br/>" );
                 return $this->isStopped++;
